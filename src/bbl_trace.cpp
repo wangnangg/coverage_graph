@@ -6,16 +6,29 @@
 FILE* output_file;
 FILE* input_file;
 ADDRINT* possible_addr_array;
-int addr_length;
+int length;
 
 int contains(ADDRINT* array, int length, ADDRINT value)
 {
-
+	int i;
+        for(i=0; i<length; i++)
+        {
+                if(array[i] == value)
+                {
+                        return 1;
+                }
+        }
+        //can not find
+        return 0;
 }
 // This function is called before every block
 VOID track_trace(ADDRINT addr)
 {
-       fprintf(output_file, "%x\n", addr); 
+        if( contains(possible_addr_array, length, addr))
+        {
+                fprintf(output_file, "0x%x\n", addr);
+        }
+
 }
 
 // Pin calls this function every time a new basic block is encountered
@@ -53,13 +66,12 @@ void get_possible_addr()
         input_file = fopen(KnobInputFile.Value().c_str(), "r");
         
         //get total number of addrs
-        int n = 0;
-        assert( fscanf(input_file, "%d", &n) > 0);
+        assert( fscanf(input_file, "%d", &length) > 0);
 
         //allocate memory
-        possible_addr_array = (ADDRINT*)malloc(sizeof(ADDRINT) * n);
+        possible_addr_array = (ADDRINT*)malloc(sizeof(ADDRINT) * length);
         int i;
-        for(i=0; i<n; i++)
+        for(i=0; i<length; i++)
         {
                 assert( fscanf(input_file, "%x", possible_addr_array + i) > 0);
                 fprintf(stdout, "%x\n", possible_addr_array[i]);
