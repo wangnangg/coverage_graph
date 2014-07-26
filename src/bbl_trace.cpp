@@ -50,6 +50,7 @@ KNOB<string> KnobInputFile(KNOB_MODE_WRITEONCE, "pintool","i", "bbl_trace.in", "
 VOID Fini(INT32 code, VOID *v)
 {
        fclose(output_file); 
+       free(possible_addr_array);
 }
 
 /* ===================================================================== */
@@ -71,9 +72,14 @@ void get_possible_addr()
         //allocate memory
         possible_addr_array = (ADDRINT*)malloc(sizeof(ADDRINT) * length);
         int i;
+        //used to skip 
+        char tmp_buffer[255];
         for(i=0; i<length; i++)
         {
-                assert( fscanf(input_file, "%x", possible_addr_array + i) > 0);
+                //skip two word
+                assert(fscanf(input_file, "%s", tmp_buffer));
+                assert(fscanf(input_file, "%s", tmp_buffer));
+                assert(fscanf(input_file, "%x", possible_addr_array + i));
                 fprintf(stdout, "%x\n", possible_addr_array[i]);
                 
         }
