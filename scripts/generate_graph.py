@@ -2,13 +2,19 @@
 import sys
 import networkx as nx
 
-def parse_graph(trace_line):
+def get_node_id(line):
+        parts = line.split();
+        return parts[0] + ':' + parts[1];
+
+def parse_graph(trace_file):
         G = nx.DiGraph();
-        tokens = trace_line.split();
-        if len(tokens) < 1:
-                return None;
-        for i in range(0, len(tokens)-1):
-               G.add_edge(tokens[i], tokens[i+1]);
+        f = open(trace_file);
+        line_st = f.readline();
+        line_ed = f.readline();
+        while line_ed:
+               G.add_edge(get_node_id(line_st), get_node_id(line_ed));
+               line_st = line_ed;
+               line_ed = f.readline();
         return G;
 
 def merge_graph(graph_list, delta):

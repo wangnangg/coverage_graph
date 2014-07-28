@@ -80,8 +80,6 @@ void get_possible_addr()
                 assert(fscanf(input_file, "%s", tmp_buffer));
                 assert(fscanf(input_file, "%s", tmp_buffer));
                 assert(fscanf(input_file, "%x", possible_addr_array + i));
-                fprintf(stdout, "%x\n", possible_addr_array[i]);
-                
         }
 
         fclose(input_file);
