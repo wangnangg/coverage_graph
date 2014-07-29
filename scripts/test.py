@@ -8,9 +8,7 @@ import sys
 def test1(argv):
         trace_file = argv[0];        
         G = parse_graph(trace_file);
-        nx.draw_graphviz(G);
-        nx.write_dot(G, 'file.dot');
-        plt.savefig('b.png');
+        nx.write_graphml(G, 'file.xml');
 
 
 

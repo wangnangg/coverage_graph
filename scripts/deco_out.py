@@ -2,18 +2,10 @@
 import sys
 
 
-def usage():
-        print 'deco_out.py bbl_in bbl_out';
-
-
-def main(argv):
-        if len(argv) < 2:
-                usage();
-                sys.exit(-1);
-        
-        bbl_in = open(argv[0]);
-        bbl_out = open(argv[1]);
-
+def decorate_bbl_trace_out(bbl_in_file, bbl_out_file, outfile):
+        bbl_in = open(bbl_in_file);
+        bbl_out = open(bbl_out_file);
+        f = open(outfile, 'w');
         #construct dict && skip the first
         bbl_dict = {};
         bbl_in.readline();
@@ -29,9 +21,21 @@ def main(argv):
         line = bbl_out.readline();
         while line:
                 key = int(line, base=16);
-                print bbl_dict[key][0] + ' ' + bbl_dict[key][1];
+                f.write( bbl_dict[key][0] + ' ' + bbl_dict[key][1] +'\n');
                 line = bbl_out.readline();
         bbl_out.close();
+        f.close();
 
+
+def usage():
+        print 'deco_out.py bbl_in bbl_out output_file';
+
+
+def main(argv):
+        if len(argv) < 3:
+                usage();
+                sys.exit(-1);
+
+        
 if __name__ == '__main__':
         main(sys.argv[1:]);
